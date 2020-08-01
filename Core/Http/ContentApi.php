@@ -43,7 +43,9 @@ class ContentApi
 
     /**
      * @param string $method Define http method 'GET', 'POST'...
-     * @param string $path Define api endpoint 'articles', 'search?query=:string'
+     * @param string $path Define api endpoint
+     * @return Response
+     * @throws \JsonException
      */
     public function request(string $method, string $path) : Response
     {
@@ -53,7 +55,7 @@ class ContentApi
 
         $this->curl->addHTTPHeader($this->headers);
 
-        $body = $this->curl->exec($this->getBaseUrl().$path);
+        $body = $this->curl->exec($path);
 
         return new Response($this->curl->getCode(), $body);
     }

@@ -2,6 +2,9 @@
 
 namespace Core\Http;
 
+use Core\Interfaces\MessageInterface;
+use Core\Interfaces\ResponseInterface;
+
 class Response implements ResponseInterface, MessageInterface
 {
     private int $statusCode;

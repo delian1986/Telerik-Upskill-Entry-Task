@@ -4,7 +4,9 @@
 namespace Core;
 
 
-class Input
+use Core\Interfaces\InputInterface;
+
+class Input implements InputInterface
 {
     private ?string $commandName;
     private ?string $inputParam;

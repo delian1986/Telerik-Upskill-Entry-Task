@@ -6,11 +6,13 @@ use Core\Exception\CommandNotFoundException;
 use Core\Exception\WrongCommandInstance;
 use Core\Http\ContentApi;
 use Core\Http\Curl;
+use Core\Interfaces\InputInterface;
+use Core\Interfaces\OutputInterface;
 
 class Application
 {
-    private Input $input;
-    private Output $output;
+    private InputInterface $input;
+    private OutputInterface $output;
     private ContentApi $contentApi;
     private CommandRegistry $commandRegistry;
 
@@ -31,14 +33,14 @@ class Application
         }
     }
 
-    public function getContentApi():ContentApi
-    {
-        return $this->contentApi;
-    }
-
-    public function getOutput(): Output
+    public function getOutput(): OutputInterface
     {
         return $this->output;
+    }
+
+    public function getInput(): InputInterface
+    {
+        return $this->input;
     }
 
     /**
@@ -59,6 +61,6 @@ class Application
             throw new WrongCommandInstance('Command: "'.$this->input->getCommandName().'" must be instance of Core\Command');
         }
 
-        return $command->execute();
+        return $command->execute($this->getInput(), $this->getOutput());
     }
 }

@@ -9,6 +9,7 @@ class Curl
     private $n;
     private $timeout;
     private $method;
+    private $headers;
 
     public function __construct(int $n = 0, int $timeout = 5)
     {
@@ -23,6 +24,11 @@ class Curl
     private function setAgent() : void
     {
         $this->info['agent'] = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1';
+    }
+
+    public function addHTTPHeader(array $headers) :void
+    {
+        $this->headers = $headers;
     }
 
     /**
@@ -40,14 +46,15 @@ class Curl
      */
     public function exec($url) : string
     {
+        if (!empty($this->headers)) {
+            curl_setopt($this->ch, CURLOPT_HTTPHEADER, $this->headers);
+        }
         curl_setopt($this->ch, CURLOPT_URL, $url);
         curl_setopt($this->ch, CURLOPT_USERAGENT, $this->info['agent']);
         curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($this->ch, CURLOPT_TIMEOUT, $this->timeout);
         curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($this->ch, CURLOPT_COOKIEJAR, $this->info['cookie']);
-        curl_setopt($this->ch, CURLOPT_COOKIEFILE, $this->info['cookie']);
         curl_setopt($this->ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($this->ch, CURLOPT_HEADER, false);
 

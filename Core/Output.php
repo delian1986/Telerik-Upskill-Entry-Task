@@ -4,7 +4,9 @@
 namespace Core;
 
 
-class Output
+use Core\Interfaces\OutputInterface;
+
+class Output implements OutputInterface
 {
     public function write(array $messageCollection): void
     {
