@@ -6,9 +6,8 @@ use Core\Command;
 
 class UpSkillCommand extends Command
 {
-    public function execute($argv)
+    public function execute()
     {
-        $name = $argv[2] ?? "World";
-        $this->getApplication()->getOutput()->write(["Hello $name!!!"]);
+        $this->getApplication()->getOutput()->writeln(123);
     }
 }

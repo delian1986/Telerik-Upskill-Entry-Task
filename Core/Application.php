@@ -2,27 +2,29 @@
 
 namespace Core;
 
+use Core\Exception\CommandNotFoundException;
+use Core\Exception\WrongCommandInstance;
+
 class Application
 {
     protected Input $input;
     protected Output $output;
     protected CommandRegistry $commandRegistry;
 
-    public function __construct()
+    public function __construct(array $argv = [])
     {
         $this->output = new Output();
+
+        $this->input = new Input($argv);
 
         $this->commandRegistry = new CommandRegistry();
     }
 
-    public function registerController($name, Command $controller): void
+    public function registerCommands(array $commands): void
     {
-        $this->commandRegistry->registerController($name, $controller);
-    }
-
-    public function registerCommand($name, $callable): void
-    {
-        $this->commandRegistry->registerCommand($name, $callable);
+        foreach ($commands as $name => $class){
+            $this->commandRegistry->registerCommand($name, $class);
+        }
     }
 
     public function getOutput(): Output
@@ -30,20 +32,24 @@ class Application
         return $this->output;
     }
 
-    public function getCommand($command)
+    /**
+     * @throws CommandNotFoundException
+     * @throws WrongCommandInstance
+     */
+    public function runCommand()
     {
-        return $this->commandRegistry->getCommand($command);
-    }
+        $command = $this->commandRegistry->getCommand($this->input->getCommandName());
 
-    public function runCommand(array $argv = []): void
-    {
-        $this->input = new Input($argv);
-
-        try {
-            call_user_func($this->commandRegistry->getCallable($this->input->getCommandName()), $argv);
-        } catch (\Exception $e) {
-            $this->getOutput()->write(["ERROR: " . $e->getMessage()]);
-            exit;
+        if ($command === null) {
+            throw new CommandNotFoundException('Command: "'.$this->input->getCommandName().'" not found.');
         }
+
+        $command = new $command($this);
+
+        if (!$command instanceof Command) {
+            throw new WrongCommandInstance('Command: "'.$this->input->getCommandName().'"must be instance of Command');
+        }
+
+        return $command->execute();
     }
 }

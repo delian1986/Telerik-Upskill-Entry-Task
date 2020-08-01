@@ -8,17 +8,14 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Core\Application;
 
-$app = new Application();
+$app = new Application($argv);
 
-$app->registerController('upskill', new UpSkill\UpSkillCommand($app));
-
-$app->registerCommand('upskill', static function (array $argv) use ($app) {
-    $name = $argv[2] ?? "World";
-    $app->getOutput()->write(["Hello $name!!!"]);
-});
+$app->registerCommands([
+    'upskill' => \UpSkill\UpSkillCommand::class
+]);
 
 try {
-    $app->runCommand($argv);
+    $app->runCommand();
 } catch (Exception $e) {
     $app->getOutput()->writeln($e->getMessage());
 }

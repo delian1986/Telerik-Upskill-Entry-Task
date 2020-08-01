@@ -8,7 +8,7 @@ abstract class Command
 {
     protected Application $app;
 
-    abstract public function execute($argv);
+    abstract public function execute();
 
     public function __construct(Application $app)
     {
