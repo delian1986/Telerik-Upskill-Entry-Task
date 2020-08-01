@@ -1,0 +1,20 @@
+{
+    "name": "telerik/upskill-entry-project",
+    "description": "cli tool for fetching and sorting data from mock api",
+    "type": "tool",
+    "authors": [
+        {
+            "name": "Delyan Marinov",
+            "email": "delian1914@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "UpSkill\\": "src/App",
+            "Core\\": "src/Core"
+        }
+    }
+}
