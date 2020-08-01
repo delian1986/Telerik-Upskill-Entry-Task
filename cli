@@ -1,7 +1,0 @@
-<?php
-
-if (PHP_SAPI !== 'cli' || PHP_VERSION < 7.4) {
-    exit;
-}
-
-echo PHP_VERSION;

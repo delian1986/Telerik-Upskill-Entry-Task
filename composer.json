@@ -13,8 +13,8 @@
     },
     "autoload": {
         "psr-4": {
-            "UpSkill\\": "src/App",
-            "Core\\": "src/Core"
+            "UpSkill\\": "UpSkill/",
+            "Core\\": "Core/"
         }
     }
 }
