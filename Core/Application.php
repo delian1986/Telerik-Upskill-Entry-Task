@@ -4,15 +4,19 @@ namespace Core;
 
 use Core\Exception\CommandNotFoundException;
 use Core\Exception\WrongCommandInstance;
+use Core\Http\ContentApi;
+use Core\Http\Curl;
 
 class Application
 {
-    protected Input $input;
-    protected Output $output;
-    protected CommandRegistry $commandRegistry;
+    private Input $input;
+    private Output $output;
+    private ContentApi $contentApi;
+    private CommandRegistry $commandRegistry;
 
     public function __construct(array $argv = [])
     {
+        $this->contentApi = new ContentApi(new Curl());
         $this->output = new Output();
 
         $this->input = new Input($argv);
@@ -25,6 +29,11 @@ class Application
         foreach ($commands as $name => $class){
             $this->commandRegistry->registerCommand($name, $class);
         }
+    }
+
+    public function getContentApi():ContentApi
+    {
+        return $this->contentApi;
     }
 
     public function getOutput(): Output
@@ -47,7 +56,7 @@ class Application
         $command = new $command($this);
 
         if (!$command instanceof Command) {
-            throw new WrongCommandInstance('Command: "'.$this->input->getCommandName().'"must be instance of Command');
+            throw new WrongCommandInstance('Command: "'.$this->input->getCommandName().'" must be instance of Core\Command');
         }
 
         return $command->execute();
