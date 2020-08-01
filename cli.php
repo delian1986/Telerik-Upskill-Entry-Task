@@ -10,4 +10,15 @@ use Core\Application;
 
 $app = new Application();
 
-$app->runCommand($argv);
+$app->registerController('upskill', new UpSkill\UpSkillCommand($app));
+
+$app->registerCommand('upskill', static function (array $argv) use ($app) {
+    $name = $argv[2] ?? "World";
+    $app->getOutput()->write(["Hello $name!!!"]);
+});
+
+try {
+    $app->runCommand($argv);
+} catch (Exception $e) {
+    $app->getOutput()->writeln($e->getMessage());
+}
