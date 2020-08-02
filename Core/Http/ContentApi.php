@@ -44,14 +44,15 @@ class ContentApi
     /**
      * @param string $method Define http method 'GET', 'POST'...
      * @param array $query
+     * @param string $contentType
      * @return Response
      * @throws \JsonException
      */
-    public function request(string $method = 'GET', array $query = [] ) : Response
+    public function request(string $method = 'GET', array $query = [], string $contentType = 'application/json') : Response
     {
         $this->curl->addMethod($method);
 
-        $this->setContentType('application/json');
+        $this->setContentType($contentType);
 
         $this->curl->addHTTPHeader($this->headers);
 

@@ -10,7 +10,7 @@ class Output implements OutputInterface
 {
     public function write(array $messageCollection): void
     {
-        echo implode(PHP_EOL, $messageCollection);
+        echo implode(PHP_EOL, $messageCollection) . PHP_EOL;
     }
 
     public function writeln(string $message): void

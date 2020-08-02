@@ -2,7 +2,6 @@
 
 namespace UpSkill;
 
-use Core\Application;
 use Core\Command;
 use Core\Exception\InvalidInputParamenerException;
 use Core\Interfaces\InputInterface;
@@ -29,17 +28,24 @@ class UpSkillCommand extends Command
         $httpClient = $this->getApplication()->getContentApi();
         $httpClient->setBaseUrl(self::BASE_URL);
 
-        $page = 1;
+        $collection = new ArrayCollection();
+
+        $page = 0;
         while (true)
         {
-            $response = $httpClient->request('GET', ['Title' => $searchTitle, 'page' => $page]);
-            $totalPages= $response->getBody()['total_pages'];
+            $response = $httpClient->request('GET', ['Title' => $searchTitle, 'page' => ++$page]);
+            $totalPages = $response->getBody()['total_pages'];
+            $responseData = $response->getBody()['data'];
+            $collection->add($responseData);
 
-            if ($page === $totalPages) {
+            if ($page >= $totalPages) {
                 break;
             }
         }
 
+        $collection->sort();
+
+        $output->write($collection->get());
 
         return 0;
     }

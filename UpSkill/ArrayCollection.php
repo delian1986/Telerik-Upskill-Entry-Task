@@ -6,14 +6,27 @@ namespace UpSkill;
 
 class ArrayCollection implements ArrayCollectionInterface
 {
+    private array $collection;
+
+    public function __construct()
+    {
+        $this->collection = [];
+    }
 
     public function add(array $collection): void
     {
-        // TODO: Implement add() method.
+        foreach ($collection as $item) {
+            $this->collection[] = $item['Title'];
+        }
     }
 
-    public function sort(array $collection): void
+    public function sort(): void
     {
-        // TODO: Implement sort() method.
+        sort($this->collection);
+    }
+
+    public function get(): array
+    {
+        return $this->collection;
     }
 }
