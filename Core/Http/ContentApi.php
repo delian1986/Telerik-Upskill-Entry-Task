@@ -43,11 +43,11 @@ class ContentApi
 
     /**
      * @param string $method Define http method 'GET', 'POST'...
-     * @param string $path Define api endpoint
+     * @param array $query
      * @return Response
      * @throws \JsonException
      */
-    public function request(string $method, string $path) : Response
+    public function request(string $method = 'GET', array $query = [] ) : Response
     {
         $this->curl->addMethod($method);
 
@@ -55,8 +55,24 @@ class ContentApi
 
         $this->curl->addHTTPHeader($this->headers);
 
-        $body = $this->curl->exec($path);
+        $queryString = null;
+        if (!empty($query)) {
+            $queryString = $this->dispatchQueryParams($query);
+        }
+
+        $body = $this->curl->exec($this->getBaseUrl().$queryString);
 
         return new Response($this->curl->getCode(), $body);
+    }
+
+    private function dispatchQueryParams(array $query = []): string
+    {
+        $queryString = '?';
+
+        foreach ($query as $key => $value){
+            $queryString .= $key .'=' . $value . '&';
+        }
+
+        return rtrim($queryString, '&');
     }
 }

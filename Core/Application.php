@@ -26,6 +26,11 @@ class Application
         $this->commandRegistry = new CommandRegistry();
     }
 
+    public function getContentApi(): ContentApi
+    {
+        return $this->contentApi;
+    }
+
     public function registerCommands(array $commands): void
     {
         foreach ($commands as $name => $class){

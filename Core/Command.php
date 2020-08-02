@@ -11,7 +11,7 @@ abstract class Command
 {
     protected Application $app;
 
-    abstract public function execute(InputInterface $input, OutputInterface $output);
+    abstract public function execute(InputInterface $input, OutputInterface $output): int;
 
     public function __construct(Application $app)
     {
