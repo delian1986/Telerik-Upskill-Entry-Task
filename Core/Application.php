@@ -20,9 +20,7 @@ class Application
     {
         $this->contentApi = new ContentApi(new Curl());
         $this->output = new Output();
-
         $this->input = new Input($argv);
-
         $this->commandRegistry = new CommandRegistry();
     }
 
@@ -52,7 +50,7 @@ class Application
      * @throws CommandNotFoundException
      * @throws WrongCommandInstance
      */
-    public function runCommand()
+    public function runCommand(): int
     {
         $command = $this->commandRegistry->getCommand($this->input->getCommandName());
 

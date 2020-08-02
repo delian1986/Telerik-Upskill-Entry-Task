@@ -10,7 +10,9 @@
     ],
     "require": {
         "php": "^7.4",
-        "ext-readline": "*"
+        "ext-readline": "*",
+        "ext-curl": "*",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {

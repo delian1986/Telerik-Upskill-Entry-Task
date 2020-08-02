@@ -4,8 +4,6 @@
 namespace Core;
 
 
-use Core\Exception\CommandNotFoundException;
-
 class CommandRegistry
 {
     protected array $registry = [];
